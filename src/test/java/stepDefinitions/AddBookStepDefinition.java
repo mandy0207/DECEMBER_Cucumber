@@ -43,7 +43,10 @@ public class AddBookStepDefinition {
 
 	@When("user sends post request to add book with {string} {string} {string} {string}")
 	public void user_sends_post_request_to_add_book_with(String bookName, String isbn, String aisle, String author) {
+		isbn= isbn+UniqueGenerator.getFaker().name();
+		aisle= aisle+UniqueGenerator.getFaker().name();
 		Book book = new Book(bookName, isbn, aisle, author);
+		
 		Response addBookResponse = given().spec(CreateSpec.makeRequestSpec(scenarioContext.getBaseURL(), ContentType.JSON))
 				.body(book).when().post(ApiResources.postBook.getResource()).then().extract().response();
 		scenarioContext.setResponse(addBookResponse);
